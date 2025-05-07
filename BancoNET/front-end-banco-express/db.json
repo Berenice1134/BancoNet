@@ -1,0 +1,54 @@
+{
+  "accounts": [
+    {
+      "id": "1",
+      "accountNumber": "1",
+      "balance": 5000,
+      "ownerName": "Juan Pérez"
+    },
+    {
+      "id": "2",
+      "accountNumber": "2",
+      "balance": 7500,
+      "ownerName": "Ana García"
+    }
+  ],
+  "account_verifications": [
+    {
+      "id": "1",
+      "exists": true
+    },
+    {
+      "id": "2",
+      "exists": true
+    }
+  ],
+  "auth_tokens": {
+    "id": "login",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user": {
+      "id": "1",
+      "name": "Juan Pérez"
+    }
+  },
+  "transactions": [
+    {
+      "id": "t1",
+      "fromAccountId": "1",
+      "toAccountId": "2",
+      "amount": 500,
+      "description": "Pago de deuda",
+      "timestamp": "2025-05-01T15:30:00Z",
+      "status": "completed"
+    },
+    {
+      "id": "t2",
+      "fromAccountId": "2",
+      "toAccountId": "1",
+      "amount": 250,
+      "description": "Reembolso parcial",
+      "timestamp": "2025-05-01T16:45:00Z",
+      "status": "completed"
+    }
+  ]
+}

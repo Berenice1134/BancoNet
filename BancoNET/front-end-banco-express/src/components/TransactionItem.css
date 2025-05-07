@@ -1,0 +1,48 @@
+.transaction-list, .transaction-item, .transaction-date, .amount-negative, .amount-positive, .transaction-name{
+    padding: 0%;
+    margin: 0%;
+}
+
+
+
+.transaction-item{
+    text-align: left;
+    
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    justify-items: center;
+    border-bottom: 1px solid var(--text-color) ;
+    border-radius: 0%;
+
+}
+
+.amount-negative{
+    background: var(--div-background-color);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.amount-positive{
+    background: var(--tertiary-color);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.transaction-date{
+    background: var(--background2-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.transaction-name{
+    font-size: 1.3rem;
+    font-weight: bold;
+    background: var(--money-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

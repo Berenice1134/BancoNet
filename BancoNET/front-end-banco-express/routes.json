@@ -1,0 +1,6 @@
+{
+  "/api/accounts/verify/:id": "/account_verifications/:id",
+  "/api/accounts/:id": "/accounts/:id",
+  "/api/accounts/:id/transactions": "/transactions?fromAccountId=:id",
+  "/api/auth/login": "/auth_tokens"
+}

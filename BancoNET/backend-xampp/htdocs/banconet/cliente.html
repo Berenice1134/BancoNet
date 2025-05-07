@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Bancario</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .section { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        button { padding: 8px 15px; margin: 5px; cursor: pointer; }
+        input { padding: 8px; margin: 5px; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Sistema Bancario</h1>
+    
+    <div class="section">
+        <h2>Consultar Saldo</h2>
+        <input type="text" id="cuentaSaldo" placeholder="Número de cuenta">
+        <button onclick="consultarSaldo()">Consultar</button>
+        <div id="resultadoSaldo"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Realizar Abono</h2>
+        <input type="text" id="cuentaAbono" placeholder="Número de cuenta">
+        <input type="number" id="montoAbono" placeholder="Monto">
+        <button onclick="realizarAbono()">Abonar</button>
+        <div id="resultadoAbono"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Realizar Retiro</h2>
+        <input type="text" id="cuentaRetiro" placeholder="Número de cuenta">
+        <input type="number" id="montoRetiro" placeholder="Monto">
+        <button onclick="realizarRetiro()">Retirar</button>
+        <div id="resultadoRetiro"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Administración</h2>
+        <button onclick="resetDatabase()">Reiniciar Base de Datos (RESET)</button>
+        <div id="resultadoReset"></div>
+    </div>
+    
+    <script>
+        const API_URL = 'api.php';
+        
+        async function consultarSaldo() {
+            const cuenta = document.getElementById('cuentaSaldo').value;
+            if (!cuenta) {
+                showError('resultadoSaldo', 'Ingrese un número de cuenta');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/saldo/${cuenta}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('resultadoSaldo').innerHTML = 
+                        `<p class="success">Saldo actual: $${data.saldo}</p>`;
+                } else {
+                    showError('resultadoSaldo', data.error || 'Error al consultar saldo');
+                }
+            } catch (error) {
+                showError('resultadoSaldo', 'Error de conexión');
+            }
+        }
+        
+        async function realizarAbono() {
+            const cuenta = document.getElementById('cuentaAbono').value;
+            const monto = document.getElementById('montoAbono').value;
+            
+            if (!cuenta || !monto || monto <= 0) {
+                showError('resultadoAbono', 'Datos inválidos');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/abono`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ numero_cuenta: cuenta, monto: parseFloat(monto) })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('resultadoAbono').innerHTML = 
+                        `<p class="success">${data.message}</p>`;
+                } else {
+                    showError('resultadoAbono', data.error || 'Error al realizar abono');
+                }
+            } catch (error) {
+                showError('resultadoAbono', 'Error de conexión');
+            }
+        }
+        
+        async function realizarRetiro() {
+            const cuenta = document.getElementById('cuentaRetiro').value;
+            const monto = document.getElementById('montoRetiro').value;
+            
+            if (!cuenta || !monto || monto <= 0) {
+                showError('resultadoRetiro', 'Datos inválidos');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/retiro`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ numero_cuenta: cuenta, monto: parseFloat(monto) })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('resultadoRetiro').innerHTML = 
+                        `<p class="success">${data.message}</p>`;
+                } else {
+                    showError('resultadoRetiro', data.error || 'Error al realizar retiro');
+                }
+            } catch (error) {
+                showError('resultadoRetiro', 'Error de conexión');
+            }
+        }
+        
+        async function resetDatabase() {
+            if (!confirm('¿Está seguro que desea reiniciar la base de datos? Esto borrará todos los datos.')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}?reset=1`, { method: 'POST' });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('resultadoReset').innerHTML = 
+                        `<p class="success">${data.message}</p>`;
+                } else {
+                    showError('resultadoReset', data.error || 'Error al reiniciar base de datos');
+                }
+            } catch (error) {
+                showError('resultadoReset', 'Error de conexión');
+            }
+        }
+        
+        function showError(elementId, message) {
+            document.getElementById(elementId).innerHTML = `<p class="error">${message}</p>`;
+        }
+    </script>
+</body>
+</html>
